@@ -1,0 +1,49 @@
+# Connecting Java to Oracle database 
+
+    We need to have following 5 points - 
+    1. Driver class: Oracle database driver class is oracle.jdbc.driver.OracleDriver. 
+    2. Connection URL: Connection URL for the 10G database is jdbc:oracle:thin:@localhost:1500:xe
+    Here,
+      - JDBC is the API
+      - Thin is the driver client
+      - Localhost is the server name on which oracle is running (may also use IP address)
+      - 1521 is the port number 
+      - XE is the oracle service name
+  
+    3. Username: Default username is system. 
+    4. Password: Is the password given at the time of installing the oracle database. 
+ 
+    Let us consider that we have a table created using the query - create table emp(id number(10),name varchar2(40),age number(3));  
+
+
+    Java class that would allow interfacing would look like - 
+
+      import java.sql.*;  
+      class OracleCon{  
+      public static void main(String args[]){  
+      try{  
+          //step1 load the driver class  
+          Class.forName("oracle.jdbc.driver.OracleDriver");  
+  
+          //step2 create  the connection object  
+          Connection con = DriverManager.getConnection(  
+                "jdbc:oracle:thin:@localhost:1521:xe","system","oracle");  
+  
+        //step3 create the statement object  
+        Statement stmt=con.createStatement();  
+  
+        //step4 execute query  
+        ResultSet rs=stmt.executeQuery("select * from emp");  
+          while(rs.next())  
+            System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));  
+  
+            //step5 close the connection object  
+            con.close();  
+  
+        }
+        catch(Exception e)
+        { 
+        System.out.println(e);
+        }  
+        }  
+      }  
